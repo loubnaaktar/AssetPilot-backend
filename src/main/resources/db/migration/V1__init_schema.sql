@@ -1,70 +1,80 @@
-CREATE TABLE categories
+CREATE TABLE utilisateur
 (
-    id   BIGINT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL UNIQUE
+    id       BIGINT AUTO_INCREMENT PRIMARY KEY,
+    prenom   VARCHAR(255) NOT NULL,
+    nom      VARCHAR(255) NOT NULL,
+    email    VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role     VARCHAR(20)  NOT NULL
 );
 
-CREATE TABLE users
+CREATE TABLE employe
 (
-    id         BIGINT AUTO_INCREMENT PRIMARY KEY,
-    first_name VARCHAR(100)                 NOT NULL,
-    last_name  VARCHAR(100)                 NOT NULL,
-    email      VARCHAR(150)                 NOT NULL UNIQUE,
-    password   VARCHAR(255)                 NOT NULL,
-    role       ENUM ('ROLE_ADMIN','ROLE_EMPLOYEE','ROLE_TECHNICIAN') NOT NULL,
-    created_at TIMESTAMP                    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP                    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    id         BIGINT       NOT NULL PRIMARY KEY,
+    matricule  VARCHAR(255),
+    CONSTRAINT fk_employe_utilisateur FOREIGN KEY (id) REFERENCES utilisateur (id)
 );
 
-CREATE TABLE assets
+CREATE TABLE technicien
 (
-    id            BIGINT AUTO_INCREMENT PRIMARY KEY,
-    serial_number VARCHAR(100) NOT NULL UNIQUE,
-    model         VARCHAR(100) NOT NULL,
-    brand         VARCHAR(100) NOT NULL,
-    category_id   BIGINT       NOT NULL,
-    purchase_date DATE         NULL,
-    status        ENUM ('EN_STOCK','ASSIGNED','OUT_OF_ORDER','IN_REPAIR','DISPOSED') NOT NULL DEFAULT 'EN_STOCK',
-    created_at    TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at    TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    CONSTRAINT fk_assets_category FOREIGN KEY (category_id) REFERENCES categories (id)
+    id          BIGINT       NOT NULL PRIMARY KEY,
+    specialite  VARCHAR(255),
+    CONSTRAINT fk_technicien_utilisateur FOREIGN KEY (id) REFERENCES utilisateur (id)
 );
 
-CREATE TABLE assignments
+CREATE TABLE categorie
 (
     id          BIGINT AUTO_INCREMENT PRIMARY KEY,
-    asset_id    BIGINT    NOT NULL UNIQUE,
-    employee_id BIGINT    NOT NULL,
-    assigned_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    released_at TIMESTAMP NULL,
-    CONSTRAINT fk_assignments_asset FOREIGN KEY (asset_id) REFERENCES assets (id),
-    CONSTRAINT fk_assignments_employee FOREIGN KEY (employee_id) REFERENCES users (id)
+    nom         VARCHAR(255),
+    description VARCHAR(255)
 );
 
-CREATE TABLE incidents
+CREATE TABLE equipement
 (
-    id            BIGINT AUTO_INCREMENT PRIMARY KEY,
-    asset_id      BIGINT  NOT NULL,
-    reported_by   BIGINT  NOT NULL,
-    technician_id BIGINT  NULL,
-    description   TEXT    NOT NULL,
-    urgency       ENUM ('LOW','MEDIUM','HIGH') NOT NULL DEFAULT 'MEDIUM',
-    status        ENUM ('PENDING','ASSIGNED','IN_PROGRESS','RESOLVED','CLOSED') NOT NULL DEFAULT 'PENDING',
-    report        TEXT    NULL,
-    created_at    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    CONSTRAINT fk_incidents_asset FOREIGN KEY (asset_id) REFERENCES assets (id),
-    CONSTRAINT fk_incidents_reported_by FOREIGN KEY (reported_by) REFERENCES users (id),
-    CONSTRAINT fk_incidents_technician FOREIGN KEY (technician_id) REFERENCES users (id)
+    id             BIGINT AUTO_INCREMENT PRIMARY KEY,
+    numero_serie   VARCHAR(255),
+    modele         VARCHAR(255),
+    marque         VARCHAR(255),
+    date_achat     DATE,
+    statut         VARCHAR(20),
+    categorie_id   BIGINT NOT NULL,
+    CONSTRAINT fk_equipement_categorie FOREIGN KEY (categorie_id) REFERENCES categorie (id)
 );
 
--- ========== DONNEES DE DEPART ==========
-INSERT INTO categories (name)
-VALUES ('Pc Portable'),
-       ('Écran'),
-       ('Accessoire');
+CREATE TABLE affectation
+(
+    id             BIGINT AUTO_INCREMENT PRIMARY KEY,
+    date_debut     DATE,
+    date_fin       DATE,
+    statut         VARCHAR(20),
+    employe_id     BIGINT NOT NULL,
+    equipement_id  BIGINT NOT NULL,
+    CONSTRAINT fk_affectation_employe FOREIGN KEY (employe_id) REFERENCES employe (id),
+    CONSTRAINT fk_affectation_equipement FOREIGN KEY (equipement_id) REFERENCES equipement (id)
+);
 
--- Compte admin par defaut : admin@assetpilot.com / password
-INSERT INTO users (first_name, last_name, email, password, role)
+CREATE TABLE incident
+(
+    id                    BIGINT AUTO_INCREMENT PRIMARY KEY,
+    description           VARCHAR(255),
+    niveau_urgence        VARCHAR(20),
+    statut                VARCHAR(20),
+    date_declaration      DATETIME,
+    date_resolution       DATETIME,
+    rapport_intervention  VARCHAR(255),
+    declare_par_id        BIGINT NOT NULL,
+    traite_par_id         BIGINT,
+    equipement_id         BIGINT NOT NULL,
+    CONSTRAINT fk_incident_declare_par FOREIGN KEY (declare_par_id) REFERENCES employe (id),
+    CONSTRAINT fk_incident_traite_par FOREIGN KEY (traite_par_id) REFERENCES technicien (id),
+    CONSTRAINT fk_incident_equipement FOREIGN KEY (equipement_id) REFERENCES equipement (id)
+);
+
+INSERT INTO categorie (nom, description)
+VALUES ('Pc Portable', 'Ordinateurs portables'),
+       ('Ecran', 'Ecrans et moniteurs'),
+       ('Accessoire', 'Accessoires divers');
+
+INSERT INTO utilisateur (prenom, nom, email, password, role)
 VALUES ('Admin', 'IT', 'admin@assetpilot.com',
         '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', 'ROLE_ADMIN');
