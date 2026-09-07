@@ -1,4 +1,4 @@
-package org.example.assetpilotbackend.dto.request;
+package org.example.assetpilotbackend.dto.categorie;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package org.example.assetpilotbackend.dto.request;
+package org.example.assetpilotbackend.dto.auth;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

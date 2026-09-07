@@ -1,4 +1,4 @@
-package org.example.assetpilotbackend.dto.request;
+package org.example.assetpilotbackend.dto.incident;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

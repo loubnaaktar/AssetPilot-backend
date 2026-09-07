@@ -1,4 +1,4 @@
-package org.example.assetpilotbackend.dto.response;
+package org.example.assetpilotbackend.dto.categorie;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

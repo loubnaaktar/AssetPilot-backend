@@ -1,4 +1,4 @@
-package org.example.assetpilotbackend.dto.response;
+package org.example.assetpilotbackend.dto.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginResponse {
+public class AuthResponse {
 
     private String token;
     private String email;

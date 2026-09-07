@@ -1,4 +1,4 @@
-package org.example.assetpilotbackend.dto.request;
+package org.example.assetpilotbackend.dto.utilisateur;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -11,7 +11,7 @@ import org.example.assetpilotbackend.enums.Role;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRequest {
+public class UtilisateurRequest {
 
     @NotBlank(message = "Le prenom est obligatoire")
     private String prenom;

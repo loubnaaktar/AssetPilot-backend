@@ -1,4 +1,4 @@
-package org.example.assetpilotbackend.dto.response;
+package org.example.assetpilotbackend.dto.utilisateur;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +8,7 @@ import org.example.assetpilotbackend.enums.Role;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserResponse {
+public class UtilisateurResponse {
 
     private Long id;
     private String prenom;

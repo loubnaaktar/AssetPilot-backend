@@ -1,4 +1,4 @@
-package org.example.assetpilotbackend.dto.response;
+package org.example.assetpilotbackend.dto.affectation;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AssignmentResponse {
+public class AffectationResponse {
 
     private Long id;
     private LocalDate dateDebut;

@@ -1,5 +1,5 @@
 package org.example.assetpilotbackend.service;
 
-public interface AssignmentService {
+public interface UtilisateurService {
 
 }
