@@ -5,7 +5,7 @@ import org.example.assetpilotbackend.model.Utilisateur;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class)
+@Mapper(componentModel = "spring")
 public interface AuthMapper {
 
     @Mapping(source = "token", target = "token")

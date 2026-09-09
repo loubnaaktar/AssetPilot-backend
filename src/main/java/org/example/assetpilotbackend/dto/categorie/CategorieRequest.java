@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryRequest {
+public class CategorieRequest {
 
     @NotBlank(message = "Le nom de la categorie est obligatoire")
     private String nom;

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.assetpilotbackend.enums.StatutEquipement;
 
 import java.time.LocalDate;
 
@@ -26,4 +27,7 @@ public class EquipementRequest {
 
     @NotNull(message = "La categorie est obligatoire")
     private Long categorieId;
+
+    @NotNull(message = "le statut est bligatoire")
+    private StatutEquipement statut;
 }

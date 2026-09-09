@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(config = MapStructConfig.class)
+@Mapper(componentModel = "spring")
 public interface EquipementMapper {
 
     @Mapping(source = "categorie.id", target = "categorieId")
@@ -21,10 +21,4 @@ public interface EquipementMapper {
     @Mapping(target = "incidents", ignore = true)
     Equipement toEntity(EquipementRequest request);
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "statut", ignore = true)
-    @Mapping(target = "categorie", ignore = true)
-    @Mapping(target = "affectations", ignore = true)
-    @Mapping(target = "incidents", ignore = true)
-    void updateEntity(EquipementRequest request, @MappingTarget Equipement equipement);
 }

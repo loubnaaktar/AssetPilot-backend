@@ -6,14 +6,14 @@ import org.example.assetpilotbackend.model.Affectation;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(config = MapStructConfig.class)
+@Mapper(componentModel = "spring")
 public interface AffectationMapper {
 
     @Mapping(source = "employe.id", target = "employeId")
     @Mapping(source = "employe.nom", target = "employeNom")
     @Mapping(source = "equipement.id", target = "equipementId")
     @Mapping(source = "equipement.numeroSerie", target = "equipementNumeroSerie")
-    AffectationResponse toDto(Affectation affectation);
+    AffectationResponse toDTO(Affectation affectation);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "statut", ignore = true)
