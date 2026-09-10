@@ -15,7 +15,6 @@ public interface EquipementMapper {
     EquipementResponse toDto(Equipement equipement);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "statut", ignore = true)
     @Mapping(target = "categorie", ignore = true)
     @Mapping(target = "affectations", ignore = true)
     @Mapping(target = "incidents", ignore = true)

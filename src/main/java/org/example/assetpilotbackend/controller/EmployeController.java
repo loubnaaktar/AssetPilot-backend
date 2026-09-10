@@ -16,7 +16,7 @@ public class EmployeController {
     private final EmployeService employeService;
 
     @PostMapping
-    public EmployeResponse ajouterEmploye(@Valid EmployeRequest request){
+    public EmployeResponse ajouterEmploye(@Valid @RequestBody EmployeRequest request){
         return employeService.ajouterEmploye(request);
     }
 

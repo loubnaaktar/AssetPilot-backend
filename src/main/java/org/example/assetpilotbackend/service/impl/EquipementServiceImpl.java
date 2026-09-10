@@ -26,7 +26,7 @@ public class EquipementServiceImpl implements EquipementService {
 
     @Override
     public EquipementResponse ajouterEquipement(EquipementRequest request) {
-       Equipement equipement= repo.save(mapper.toEntity(request));
+       Equipement equipement = mapper.toEntity(request);
        Categorie categorie = service.getCategorieEntity(request.getCategorieId());
        equipement.setCategorie(categorie);
        return mapper.toDto(repo.save(equipement));

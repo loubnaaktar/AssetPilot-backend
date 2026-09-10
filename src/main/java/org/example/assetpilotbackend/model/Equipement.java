@@ -24,6 +24,8 @@ public class Equipement {
     private String modele;
     private String Marque;
     private LocalDate dateAchat;
+
+    @Enumerated(EnumType.STRING)
     private StatutEquipement statut;
 
     @ManyToOne

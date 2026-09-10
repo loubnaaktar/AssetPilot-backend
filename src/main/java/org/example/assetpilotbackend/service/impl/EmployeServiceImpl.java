@@ -3,6 +3,7 @@ package org.example.assetpilotbackend.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.example.assetpilotbackend.dto.employe.EmployeRequest;
 import org.example.assetpilotbackend.dto.employe.EmployeResponse;
+import org.example.assetpilotbackend.enums.Role;
 import org.example.assetpilotbackend.exception.ResourceNotFoundException;
 import org.example.assetpilotbackend.mapper.EmployeMapper;
 import org.example.assetpilotbackend.model.Employe;
@@ -21,8 +22,9 @@ public class EmployeServiceImpl implements EmployeService {
 
     @Override
     public EmployeResponse ajouterEmploye(EmployeRequest request) {
-        Employe employe = repo.save(mapper.toEntity(request));
-        return mapper.toDTO(employe);
+        Employe employe = mapper.toEntity(request);
+        employe.setRole(Role.ROLE_EMPLOYEE);
+        return mapper.toDTO(repo.save(employe));
     }
 
     @Override

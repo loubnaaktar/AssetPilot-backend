@@ -99,21 +99,25 @@ public class IncidentServiceImpl implements IncidentService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<IncidentResponse> allIncidents(Pageable pageable) {
         return incidentRepository.findAll(pageable).map(incidentMapper::toDTO);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<IncidentResponse> incidentsParEmploye(long employeId, Pageable pageable) {
         return incidentRepository.findByDeclarePar_Id(employeId, pageable).map(incidentMapper::toDTO);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<IncidentResponse> incidentsParTechnicien(long technicienId, Pageable pageable) {
         return incidentRepository.findByTraitePar_Id(technicienId, pageable).map(incidentMapper::toDTO);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public IncidentResponse chercherById(long id) {
         return incidentMapper.toDTO(getIncidentEntity(id));
     }

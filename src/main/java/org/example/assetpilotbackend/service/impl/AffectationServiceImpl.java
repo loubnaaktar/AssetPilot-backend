@@ -17,6 +17,7 @@ import org.example.assetpilotbackend.service.AffectationService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
@@ -31,6 +32,7 @@ public class AffectationServiceImpl implements AffectationService {
 
 
     @Override
+    @Transactional
     public AffectationResponse creerAffectation(AffectationRequest request) {
         Employe employe = employeRepository.findById(request.getEmployeId())
                 .orElseThrow(() -> new ResourceNotFoundException("Employé introuvable avec id: " + request.getEmployeId()));
@@ -65,6 +67,7 @@ public class AffectationServiceImpl implements AffectationService {
     }
 
     @Override
+    @Transactional
     public AffectationResponse restituerEquipement(long affectationId) {
         Affectation affectation = getAffectationEntity(affectationId);
         if(affectation.getStatut() == StatutAffectation.RESTITUE){
