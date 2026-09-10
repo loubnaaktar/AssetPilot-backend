@@ -14,4 +14,6 @@ public interface IncidentRepository extends JpaRepository<Incident, Long> {
     Page<Incident> findByTraitePar_Id(Long technicienId, Pageable pageable);
 
     Page<Incident> findByStatut(StatutIncident statut, Pageable pageable);
+
+    long countByStatut(StatutIncident statut);
 }

@@ -14,6 +14,8 @@ public interface EquipementRepository extends JpaRepository<Equipement, Long> {
 
     Page<Equipement> findByStatut(StatutEquipement statut, Pageable pageable);
 
+    long countByStatut(StatutEquipement statut);
+
     Page<Equipement> findByCategorie_Id(Long categorieId, Pageable pageable);
 
 }
