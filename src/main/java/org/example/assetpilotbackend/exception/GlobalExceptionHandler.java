@@ -3,6 +3,7 @@ package org.example.assetpilotbackend.exception;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -40,6 +41,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Map<String, Object>> handleDataIntegrity(DataIntegrityViolationException ex) {
         return buildResponse(HttpStatus.CONFLICT, "Contrainte de donnees violee");
+    }
+
+    @ExceptionHandler(InvalidDataAccessApiUsageException.class)
+    public ResponseEntity<Map<String, Object>> handleInvalidDataAccess(InvalidDataAccessApiUsageException ex) {
+        return buildResponse(HttpStatus.BAD_REQUEST, "Parametre de tri (sort) invalide. Utilisez une propriete existante, ex: sort=id,asc");
     }
 
     @ExceptionHandler(Exception.class)

@@ -14,4 +14,6 @@ public interface IncidentService {
     Page<IncidentResponse> incidentsParEmploye(long employeId, Pageable pageable);
     Page<IncidentResponse> incidentsParTechnicien(long technicienId, Pageable pageable);
     IncidentResponse chercherById(long id);
+
+    byte[] exporterExcel();
 }

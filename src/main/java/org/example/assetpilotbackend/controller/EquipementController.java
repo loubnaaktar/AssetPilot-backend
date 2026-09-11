@@ -6,8 +6,11 @@ import org.example.assetpilotbackend.dto.equipement.EquipementRequest;
 import org.example.assetpilotbackend.dto.equipement.EquipementResponse;
 import org.example.assetpilotbackend.enums.StatutEquipement;
 import org.example.assetpilotbackend.service.EquipementService;
+import org.example.assetpilotbackend.service.QrCodeService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,6 +19,15 @@ import org.springframework.web.bind.annotation.*;
 public class EquipementController {
 
     public final EquipementService equipementService;
+
+    private final QrCodeService qrCodeService;
+
+    @GetMapping("/{id}/qr-code")
+    public ResponseEntity<byte[]> getQrCode(@PathVariable Long id) {
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_PNG)
+                .body(qrCodeService.genererQrCode(id));
+    }
 
     @PostMapping
     public EquipementResponse ajouterEquipement(@Valid @RequestBody EquipementRequest request){

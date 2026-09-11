@@ -8,6 +8,8 @@ import org.example.assetpilotbackend.dto.incident.IncidentUpdateRequest;
 import org.example.assetpilotbackend.service.IncidentService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -50,5 +52,13 @@ public class IncidentController {
     @GetMapping("/{id}")
     public IncidentResponse chercherById(@PathVariable long id) {
         return incidentService.chercherById(id);
+    }
+
+    @GetMapping("/excel")
+    public ResponseEntity<byte[]> exportExcel() {
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                .header("Content-Disposition", "attachment; filename=incidents.xlsx")
+                .body(incidentService.exporterExcel());
     }
 }

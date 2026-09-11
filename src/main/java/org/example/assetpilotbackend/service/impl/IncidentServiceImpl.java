@@ -17,11 +17,15 @@ import org.example.assetpilotbackend.repository.EquipementRepository;
 import org.example.assetpilotbackend.repository.IncidentRepository;
 import org.example.assetpilotbackend.repository.TechnicienRepository;
 import org.example.assetpilotbackend.service.IncidentService;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.ByteArrayOutputStream;
 import java.time.LocalDateTime;
 
 @Service
@@ -125,5 +129,41 @@ public class IncidentServiceImpl implements IncidentService {
     public Incident getIncidentEntity(long id) {
         return incidentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Incident introuvable avec id: " + id));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public byte[] exporterExcel() {
+        try (XSSFWorkbook workbook = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            Sheet sheet = workbook.createSheet("Incidents");
+
+            String[] colonnes = {"ID", "Description", "Urgence", "Statut", "Date declaration",
+                    "Date resolution", "Rapport intervention", "Declare par", "Technicien", "Equipement"};
+
+            Row header = sheet.createRow(0);
+            for (int i = 0; i < colonnes.length; i++) {
+                header.createCell(i).setCellValue(colonnes[i]);
+            }
+
+            int rowIndex = 1;
+            for (Incident i : incidentRepository.findAll()) {
+                Row row = sheet.createRow(rowIndex++);
+                row.createCell(0).setCellValue(i.getId());
+                row.createCell(1).setCellValue(i.getDescription());
+                row.createCell(2).setCellValue(i.getNiveauUrgence() != null ? i.getNiveauUrgence().name() : "");
+                row.createCell(3).setCellValue(i.getStatut() != null ? i.getStatut().name() : "");
+                row.createCell(4).setCellValue(i.getDateDeclaration() != null ? i.getDateDeclaration().toString() : "");
+                row.createCell(5).setCellValue(i.getDateResolution() != null ? i.getDateResolution().toString() : "");
+                row.createCell(6).setCellValue(i.getRapportIntervention() != null ? i.getRapportIntervention() : "");
+                row.createCell(7).setCellValue(i.getDeclarePar() != null ? i.getDeclarePar().getPrenom() + " " + i.getDeclarePar().getNom() : "");
+                row.createCell(8).setCellValue(i.getTraitePar() != null ? i.getTraitePar().getPrenom() + " " + i.getTraitePar().getNom() : "");
+                row.createCell(9).setCellValue(i.getEquipement() != null ? i.getEquipement().getNumeroSerie() : "");
+            }
+
+            workbook.write(out);
+            return out.toByteArray();
+        } catch (Exception e) {
+            throw new RuntimeException("Erreur lors de l'export Excel", e);
+        }
     }
 }
