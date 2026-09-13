@@ -30,4 +30,8 @@ public class UtilisateurRequest {
 
     @NotNull(message = "Le role est obligatoire")
     private Role role;
+
+    private String matricule;
+
+    private String specialite;
 }

@@ -9,6 +9,8 @@ import org.example.assetpilotbackend.mapper.TechnicienMapper;
 import org.example.assetpilotbackend.model.Technicien;
 import org.example.assetpilotbackend.repository.TechnicienRepository;
 import org.example.assetpilotbackend.service.TechnicienService;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ public class TechnicienServiceImpl implements TechnicienService {
     private final TechnicienMapper mapper;
 
     @Override
+    @CacheEvict(value = "techniciens", allEntries = true)
     public TechnicienResponse ajouterTechnicien(TechnicienRequest request) {
         Technicien technicien = mapper.toEntity(request);
         technicien.setRole(Role.ROLE_TECHNICIAN);
@@ -32,11 +35,13 @@ public class TechnicienServiceImpl implements TechnicienService {
     }
 
     @Override
+    @Cacheable(value = "techniciens", key = "#id")
     public TechnicienResponse chercherById(long id) {
         return mapper.toDTO(getTechnicienEntity(id));
     }
 
     @Override
+    @CacheEvict(value = "techniciens", key = "#id")
     public TechnicienResponse modifierTechnicien(long id, TechnicienRequest request) {
         Technicien technicien = getTechnicienEntity(id);
         technicien.setNom(request.getNom());
@@ -47,6 +52,7 @@ public class TechnicienServiceImpl implements TechnicienService {
     }
 
     @Override
+    @CacheEvict(value = "techniciens", key = "#id")
     public void supprimerTechnicien(long id) {
         repo.delete(getTechnicienEntity(id));
     }

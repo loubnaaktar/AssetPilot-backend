@@ -14,6 +14,8 @@ import org.example.assetpilotbackend.repository.AffectationRepository;
 import org.example.assetpilotbackend.repository.EmployeRepository;
 import org.example.assetpilotbackend.repository.EquipementRepository;
 import org.example.assetpilotbackend.service.AffectationService;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -32,7 +34,7 @@ public class AffectationServiceImpl implements AffectationService {
 
 
     @Override
-    @Transactional
+    @CacheEvict(value = "affectations", allEntries = true)
     public AffectationResponse creerAffectation(AffectationRequest request) {
         Employe employe = employeRepository.findById(request.getEmployeId())
                 .orElseThrow(() -> new ResourceNotFoundException("Employé introuvable avec id: " + request.getEmployeId()));
@@ -67,7 +69,7 @@ public class AffectationServiceImpl implements AffectationService {
     }
 
     @Override
-    @Transactional
+    @CacheEvict(value = "affectations", key = "#affectationId")
     public AffectationResponse restituerEquipement(long affectationId) {
         Affectation affectation = getAffectationEntity(affectationId);
         if(affectation.getStatut() == StatutAffectation.RESTITUE){
@@ -89,6 +91,7 @@ public class AffectationServiceImpl implements AffectationService {
     }
 
     @Override
+    @Cacheable(value = "affectations", key = "#id")
     public AffectationResponse chercherById(long id) {
         return affectationMapper.toDTO(getAffectationEntity(id));
     }

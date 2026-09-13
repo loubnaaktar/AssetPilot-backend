@@ -20,6 +20,8 @@ import org.example.assetpilotbackend.service.IncidentService;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -40,6 +42,7 @@ public class IncidentServiceImpl implements IncidentService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "incidents", allEntries = true)
     public IncidentResponse declarerIncident(long employeId, IncidentRequest request) {
         Employe employe = employeRepository.findById(employeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Employé introuvable avec id: " + employeId));
@@ -61,6 +64,7 @@ public class IncidentServiceImpl implements IncidentService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "incidents", key = "#incidentId")
     public IncidentResponse assignerTechnicien(long incidentId, long technicienId) {
         Incident incident = getIncidentEntity(incidentId);
         Technicien technicien = technicienRepository.findById(technicienId)
@@ -78,6 +82,7 @@ public class IncidentServiceImpl implements IncidentService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "incidents", key = "#incidentId")
     public IncidentResponse mettreAJourIncident(long incidentId, IncidentUpdateRequest request) {
         Incident incident = getIncidentEntity(incidentId);
 
@@ -122,6 +127,7 @@ public class IncidentServiceImpl implements IncidentService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "incidents", key = "#id")
     public IncidentResponse chercherById(long id) {
         return incidentMapper.toDTO(getIncidentEntity(id));
     }

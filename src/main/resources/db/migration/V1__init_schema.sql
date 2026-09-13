@@ -77,4 +77,4 @@ VALUES ('Pc Portable', 'Ordinateurs portables'),
 
 INSERT INTO utilisateur (prenom, nom, email, password, role)
 VALUES ('Admin', 'IT', 'admin@assetpilot.com',
-        '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', 'ROLE_ADMIN');
+        '$2a$10$5K3ueoifpzTP2WRCL0DHyOONIdmQEud3OOxPeg7PO6aqLHogOfCES', 'ROLE_ADMIN');
