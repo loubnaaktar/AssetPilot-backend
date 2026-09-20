@@ -8,8 +8,6 @@ import org.example.assetpilotbackend.mapper.CategorieMapper;
 import org.example.assetpilotbackend.model.Categorie;
 import org.example.assetpilotbackend.repository.CategorieRepository;
 import org.example.assetpilotbackend.service.CategoryService;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,14 +19,12 @@ public class CategorieServiceImpl implements CategoryService {
     private final CategorieRepository repo;
     private final CategorieMapper mapper;
     @Override
-    @CacheEvict(value = "categories", allEntries = true)
     public CategorieResponse ajouterCategorie(CategorieRequest request) {
         Categorie categorie = repo.save(mapper.toEntity(request));
         return mapper.toDto(categorie);
     }
 
     @Override
-    @Cacheable(value = "categories", key = "#id")
     public CategorieResponse getCategorieById(Long id) {
         return mapper.toDto(getCategorieEntity(id));
     }
@@ -39,7 +35,6 @@ public class CategorieServiceImpl implements CategoryService {
     }
 
     @Override
-    @CacheEvict(value = "categories", key = "#id")
     public CategorieResponse modifierCategorie(Long id, CategorieRequest request) {
         Categorie categorie = getCategorieEntity(id);
         categorie.setNom(request.getNom());
@@ -48,7 +43,6 @@ public class CategorieServiceImpl implements CategoryService {
     }
 
     @Override
-    @CacheEvict(value = "categories", key = "#id")
     public void supprimerCategorie(Long id) {
         repo.delete(getCategorieEntity(id));
     }

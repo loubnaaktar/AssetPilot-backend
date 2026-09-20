@@ -36,13 +36,16 @@ public class EquipementController {
     return equipementService.ajouterEquipement(request);
 }
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'TECHNICIAN')")
-    public Page<EquipementResponse> getAllEquipments(Pageable pageable){
-        return equipementService.allEquipements(pageable);
+    @PreAuthorize("hasAnyRole('ADMIN', 'TECHNICIEN')")
+    public Page<EquipementResponse> getAllEquipments(@RequestParam(required = false) String mot,
+                                                     @RequestParam(required = false) StatutEquipement statut,
+                                                     @RequestParam(required = false) Long categorieId,
+                                                     Pageable pageable) {
+        return equipementService.rechercherEquipements(mot, statut, categorieId, pageable);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'TECHNICIAN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TECHNICIEN')")
     public EquipementResponse checherParId(@PathVariable Long id){
         return equipementService.chercherById(id);
     }
@@ -54,13 +57,13 @@ public class EquipementController {
     }
 
     @GetMapping("/statut/{statut}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'TECHNICIAN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TECHNICIEN')")
     public Page<EquipementResponse> getEquipementParStatut(@PathVariable StatutEquipement statut, Pageable pageable){
         return equipementService.equipementsParStatut(statut,pageable);
     }
 
     @GetMapping("Categorie/{categorieId}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'TECHNICIAN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TECHNICIEN')")
     public Page<EquipementResponse> getEquipementParCategorie(@PathVariable Long categorieId,Pageable pageable){
         return equipementService.equipementsParCategorie(categorieId,pageable);
     }

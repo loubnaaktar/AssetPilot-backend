@@ -3,6 +3,8 @@ package org.example.assetpilotbackend.service;
 import org.example.assetpilotbackend.dto.incident.IncidentRequest;
 import org.example.assetpilotbackend.dto.incident.IncidentResponse;
 import org.example.assetpilotbackend.dto.incident.IncidentUpdateRequest;
+import org.example.assetpilotbackend.enums.NiveauUrgence;
+import org.example.assetpilotbackend.enums.StatutIncident;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -10,7 +12,7 @@ public interface IncidentService {
     IncidentResponse declarerIncident(long employeId,IncidentRequest request);
     IncidentResponse assignerTechnicien(long incidentId, long technicienId);
     IncidentResponse mettreAJourIncident(long incidentId, IncidentUpdateRequest request);
-    Page<IncidentResponse> allIncidents(Pageable pageable);
+    Page<IncidentResponse> allIncidents(String mot, StatutIncident statut, NiveauUrgence niveauUrgence, Boolean nonAssigne, Pageable pageable);
     Page<IncidentResponse> incidentsParEmploye(long employeId, Pageable pageable);
     Page<IncidentResponse> incidentsParTechnicien(long technicienId, Pageable pageable);
     IncidentResponse chercherById(long id);

@@ -14,8 +14,6 @@ import org.example.assetpilotbackend.repository.AffectationRepository;
 import org.example.assetpilotbackend.repository.EmployeRepository;
 import org.example.assetpilotbackend.repository.EquipementRepository;
 import org.example.assetpilotbackend.service.AffectationService;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -34,7 +32,6 @@ public class AffectationServiceImpl implements AffectationService {
 
 
     @Override
-    @CacheEvict(value = "affectations", allEntries = true)
     public AffectationResponse creerAffectation(AffectationRequest request) {
         Employe employe = employeRepository.findById(request.getEmployeId())
                 .orElseThrow(() -> new ResourceNotFoundException("Employé introuvable avec id: " + request.getEmployeId()));
@@ -42,14 +39,13 @@ public class AffectationServiceImpl implements AffectationService {
         Equipement equipement = equipementRepository.findById(request.getEquipementId())
                 .orElseThrow(() -> new ResourceNotFoundException("Équipement introuvable avec id: " + request.getEquipementId()));
 
-        if(equipement.getStatut() != StatutEquipement.EN_STOCK){
+        if (equipement.getStatut() != StatutEquipement.EN_STOCK) {
             throw new IllegalArgumentException("L'équipement doit être 'EN_STOCK' pour être affecté.");
         }
 
-        boolean possedeDejaEquipementMemeCategorie = employe.getAffectations().stream()
-                .filter(a -> a.getStatut() == StatutAffectation.ACTIF)
-                .map(Affectation::getEquipement)
-                .anyMatch(e -> e.getCategorie().getId().equals(equipement.getCategorie().getId()));
+        boolean possedeDejaEquipementMemeCategorie =
+                affectationRepository.existsActiveAffectationByEmployeAndCategorie(
+                        request.getEmployeId(), equipement.getCategorie().getId());
 
         if (possedeDejaEquipementMemeCategorie) {
             throw new IllegalArgumentException("Cet employé possède déjà un équipement actif dans la catégorie : "
@@ -69,7 +65,6 @@ public class AffectationServiceImpl implements AffectationService {
     }
 
     @Override
-    @CacheEvict(value = "affectations", key = "#affectationId")
     public AffectationResponse restituerEquipement(long affectationId) {
         Affectation affectation = getAffectationEntity(affectationId);
         if(affectation.getStatut() == StatutAffectation.RESTITUE){
@@ -91,7 +86,6 @@ public class AffectationServiceImpl implements AffectationService {
     }
 
     @Override
-    @Cacheable(value = "affectations", key = "#id")
     public AffectationResponse chercherById(long id) {
         return affectationMapper.toDTO(getAffectationEntity(id));
     }

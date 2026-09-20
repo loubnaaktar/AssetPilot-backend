@@ -12,8 +12,6 @@ import org.example.assetpilotbackend.model.Equipement;
 import org.example.assetpilotbackend.repository.CategorieRepository;
 import org.example.assetpilotbackend.repository.EquipementRepository;
 import org.example.assetpilotbackend.service.EquipementService;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -27,7 +25,6 @@ public class EquipementServiceImpl implements EquipementService {
     private final CategorieServiceImpl service;
 
     @Override
-    @CacheEvict(value = "equipements", allEntries = true)
     public EquipementResponse ajouterEquipement(EquipementRequest request) {
        Equipement equipement = mapper.toEntity(request);
        Categorie categorie = service.getCategorieEntity(request.getCategorieId());
@@ -41,13 +38,16 @@ public class EquipementServiceImpl implements EquipementService {
     }
 
     @Override
-    @Cacheable(value = "equipements", key = "#id")
+    public Page<EquipementResponse> rechercherEquipements(String mot, StatutEquipement statut, Long categorieId, Pageable pageable) {
+        return repo.rechercher(mot, statut, categorieId, pageable).map(mapper::toDto);
+    }
+
+    @Override
     public EquipementResponse chercherById(long id) {
         return mapper.toDto(getEquipementEntity(id));
     }
 
     @Override
-    @CacheEvict(value = "equipements", key = "#id")
     public EquipementResponse modifierEquipement(long id, EquipementRequest request) {
         Equipement equipement = getEquipementEntity(id);
         Categorie categorie = service.getCategorieEntity(request.getCategorieId());
@@ -72,7 +72,6 @@ public class EquipementServiceImpl implements EquipementService {
     }
 
     @Override
-    @CacheEvict(value = "equipements", key = "#id")
     public void supprimerEquipement(long id) {
         repo.delete( getEquipementEntity(id));
     }

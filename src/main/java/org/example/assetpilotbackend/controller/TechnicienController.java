@@ -2,6 +2,7 @@ package org.example.assetpilotbackend.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.assetpilotbackend.dto.technicien.TechnicienDisponible;
 import org.example.assetpilotbackend.dto.technicien.TechnicienRequest;
 import org.example.assetpilotbackend.dto.technicien.TechnicienResponse;
 import org.example.assetpilotbackend.service.TechnicienService;
@@ -9,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -29,6 +32,18 @@ public class TechnicienController {
     @PreAuthorize("hasRole('ADMIN')")
     public Page<TechnicienResponse> getAllTechnicien(Pageable pageable){
         return technicienService.allTechniciens(pageable);
+    }
+
+    @GetMapping("/specialites")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<String> allSpecialites() {
+        return technicienService.allSpecialites();
+    }
+
+    @GetMapping("/specialite/{specialite}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<TechnicienDisponible> parSpecialite(@PathVariable String specialite) {
+        return technicienService.techniciensParSpecialite(specialite);
     }
 
     @GetMapping("/{id}")

@@ -13,12 +13,6 @@ services:
       timeout: 5s
       retries: 10
 
-  redis:
-    image: redis:7-alpine
-    container_name: assetpilot-redis
-    ports:
-      - "6379:6379"
-
   app:
     build: .
     container_name: assetpilot-app
@@ -28,10 +22,6 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/assetpilot?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 2002
-      SPRING_DATA_REDIS_HOST: redis
-      SPRING_CACHE_TYPE: redis
     depends_on:
       mysql:
         condition: service_healthy
-      redis:
-        condition: service_started

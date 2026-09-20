@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 public interface EquipementService {
     EquipementResponse ajouterEquipement(EquipementRequest request);
     Page<EquipementResponse> allEquipements(Pageable pageable);
+    Page<EquipementResponse> rechercherEquipements(String mot, StatutEquipement statut, Long categorieId, Pageable pageable);
     EquipementResponse chercherById(long id);
     EquipementResponse modifierEquipement(long id, EquipementRequest request);
     Page<EquipementResponse> equipementsParStatut(StatutEquipement statut, Pageable pageable);

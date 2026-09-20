@@ -70,11 +70,6 @@ CREATE TABLE incident
     CONSTRAINT fk_incident_equipement FOREIGN KEY (equipement_id) REFERENCES equipement (id)
 );
 
-INSERT INTO categorie (nom, description)
-VALUES ('Pc Portable', 'Ordinateurs portables'),
-       ('Ecran', 'Ecrans et moniteurs'),
-       ('Accessoire', 'Accessoires divers');
-
 INSERT INTO utilisateur (prenom, nom, email, password, role)
 VALUES ('Admin', 'IT', 'admin@assetpilot.com',
-        '$2a$10$5K3ueoifpzTP2WRCL0DHyOONIdmQEud3OOxPeg7PO6aqLHogOfCES', 'ROLE_ADMIN');
+        '$2a$10$5K3ueoifpzTP2WRCL0DHyOONIdmQEud3OOxPeg7PO6aqLHogOfCES', 'ADMIN');

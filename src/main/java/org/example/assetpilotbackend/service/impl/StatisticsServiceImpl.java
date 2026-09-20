@@ -8,7 +8,6 @@ import org.example.assetpilotbackend.repository.EquipementRepository;
 import org.example.assetpilotbackend.repository.EmployeRepository;
 import org.example.assetpilotbackend.repository.IncidentRepository;
 import org.example.assetpilotbackend.service.StatisticsService;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
@@ -17,7 +16,6 @@ public class StatisticsServiceImpl implements StatisticsService {
     private final EmployeRepository employeRepository;
     private final IncidentRepository incidentRepository;
     @Override
-    @Cacheable("statistiques")
     public StatisticsResponse getStatistiquesGlobales() {
         long totalEquipements = equipementRepository.count();
         long equipementsEnStock = equipementRepository.countByStatut(StatutEquipement.EN_STOCK);

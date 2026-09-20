@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.example.assetpilotbackend.dto.incident.IncidentRequest;
 import org.example.assetpilotbackend.dto.incident.IncidentResponse;
 import org.example.assetpilotbackend.dto.incident.IncidentUpdateRequest;
+import org.example.assetpilotbackend.enums.NiveauUrgence;
+import org.example.assetpilotbackend.enums.StatutIncident;
 import org.example.assetpilotbackend.service.IncidentService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +23,7 @@ public class IncidentController {
     private final IncidentService incidentService;
 
     @PostMapping("/declarer/{employeId}")
-    @PreAuthorize("hasRole('EMPLOYEE')")
+    @PreAuthorize("hasRole('EMPLOYE')")
     public IncidentResponse declarerIncident(@PathVariable long employeId, @Valid @RequestBody IncidentRequest request) {
         return incidentService.declarerIncident(employeId, request);
     }
@@ -33,31 +35,36 @@ public class IncidentController {
     }
 
     @PutMapping("/{incidentId}")
-    @PreAuthorize("hasRole('TECHNICIAN')")
+    @PreAuthorize("hasRole('TECHNICIEN')")
     public IncidentResponse mettreAJourIncident(@PathVariable long incidentId, @RequestBody IncidentUpdateRequest request) {
         return incidentService.mettreAJourIncident(incidentId, request);
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'TECHNICIAN')")
-    public Page<IncidentResponse> allIncidents(Pageable pageable) {
-        return incidentService.allIncidents(pageable);
+    @PreAuthorize("hasAnyRole('ADMIN', 'TECHNICIEN')")
+    public Page<IncidentResponse> allIncidents(
+            @RequestParam(required = false) String mot,
+            @RequestParam(required = false) StatutIncident statut,
+            @RequestParam(required = false) NiveauUrgence niveauUrgence,
+            @RequestParam(required = false) Boolean nonAssigne,
+            Pageable pageable) {
+        return incidentService.allIncidents(mot, statut, niveauUrgence, nonAssigne, pageable);
     }
 
     @GetMapping("/employe/{employeId}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYE')")
     public Page<IncidentResponse> incidentsParEmploye(@PathVariable long employeId, Pageable pageable) {
         return incidentService.incidentsParEmploye(employeId, pageable);
     }
 
     @GetMapping("/technicien/{technicienId}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'TECHNICIAN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TECHNICIEN')")
     public Page<IncidentResponse> incidentsParTechnicien(@PathVariable long technicienId, Pageable pageable) {
         return incidentService.incidentsParTechnicien(technicienId, pageable);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'TECHNICIAN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TECHNICIEN')")
     public IncidentResponse chercherById(@PathVariable long id) {
         return incidentService.chercherById(id);
     }

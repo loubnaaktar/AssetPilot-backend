@@ -22,10 +22,6 @@ public class TechnicienRequest {
     @Email(message = "L'email n'est pas valide")
     private String email;
 
-    @NotBlank(message = "Le mot de passe est obligatoire")
-    @Size(min = 6, message = "Le mot de passe doit contenir au moins 6 caracteres")
-    private String password;
-
     @NotBlank(message = "La specialite est obligatoire")
     private String specialite;
 }
