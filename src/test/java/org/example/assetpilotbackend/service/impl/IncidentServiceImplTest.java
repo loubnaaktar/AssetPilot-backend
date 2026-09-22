@@ -12,6 +12,7 @@ import org.example.assetpilotbackend.model.Incident;
 import org.example.assetpilotbackend.model.Technicien;
 import org.example.assetpilotbackend.repository.EmployeRepository;
 import org.example.assetpilotbackend.repository.EquipementRepository;
+import org.example.assetpilotbackend.repository.AffectationRepository;
 import org.example.assetpilotbackend.repository.IncidentRepository;
 import org.example.assetpilotbackend.repository.TechnicienRepository;
 import org.junit.jupiter.api.Test;
@@ -38,6 +39,8 @@ class IncidentServiceImplTest {
     private EquipementRepository equipementRepository;
     @Mock
     private TechnicienRepository technicienRepository;
+    @Mock
+    private AffectationRepository affectationRepository;
     @Mock
     private IncidentMapper incidentMapper;
     @InjectMocks
@@ -77,6 +80,7 @@ class IncidentServiceImplTest {
         long technicienId = 3L;
 
         Equipement equipement = new Equipement();
+        equipement.setStatut(StatutEquipement.EN_PANNE);
         Incident incident = new Incident();
         incident.setEquipement(equipement);
 

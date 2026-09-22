@@ -19,6 +19,7 @@ public interface IncidentMapper {
     @Mapping(source = "traitePar.nom", target = "traiteParNom")
     @Mapping(source = "equipement.id", target = "equipementId")
     @Mapping(source = "equipement.numeroSerie", target = "equipementNumeroSerie")
+    @Mapping(source = "equipement.modele", target = "equipementModele")
     IncidentResponse toDTO(Incident incident);
 
     @Mapping(target = "id", ignore = true)

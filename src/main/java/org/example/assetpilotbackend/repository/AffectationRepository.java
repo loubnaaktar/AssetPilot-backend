@@ -16,6 +16,8 @@ public interface AffectationRepository extends JpaRepository<Affectation, Long> 
 
     Page<Affectation> findByEquipement_IdAndStatut(Long equipementId, StatutAffectation statut, Pageable pageable);
 
+    boolean existsByEquipement_IdAndStatut(Long equipementId, StatutAffectation statut);
+
     @Query("""
         SELECT COUNT(a) > 0
         FROM Affectation a

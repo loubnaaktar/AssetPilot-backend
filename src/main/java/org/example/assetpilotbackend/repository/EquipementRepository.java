@@ -21,9 +21,7 @@ public interface EquipementRepository extends JpaRepository<Equipement, Long> {
     Page<Equipement> findByCategorie_Id(Long categorieId, Pageable pageable);
 
     @Query("SELECT e FROM Equipement e " +
-            "WHERE (:mot IS NULL OR LOWER(e.NumeroSerie) LIKE LOWER(CONCAT('%', :mot, '%')) " +
-            "OR LOWER(e.modele) LIKE LOWER(CONCAT('%', :mot, '%')) " +
-            "OR LOWER(e.Marque) LIKE LOWER(CONCAT('%', :mot, '%'))) " +
+            "WHERE (:mot IS NULL OR LOWER(e.modele) LIKE LOWER(CONCAT('%', :mot, '%'))) " +
             "AND (:statut IS NULL OR e.statut = :statut) " +
             "AND (:categorieId IS NULL OR e.categorie.id = :categorieId)")
     Page<Equipement> rechercher(@Param("mot") String mot,

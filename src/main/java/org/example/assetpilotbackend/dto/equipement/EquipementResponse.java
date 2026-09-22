@@ -17,6 +17,7 @@ public class EquipementResponse {
     private String modele;
     private String marque;
     private LocalDate dateAchat;
+    private LocalDate dateAffectation;
     private StatutEquipement statut;
     private Long categorieId;
     private String categorieNom;

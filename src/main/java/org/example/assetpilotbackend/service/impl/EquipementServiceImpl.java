@@ -4,17 +4,21 @@ import lombok.RequiredArgsConstructor;
 import org.example.assetpilotbackend.dto.equipement.EquipementRequest;
 import org.example.assetpilotbackend.dto.equipement.EquipementResponse;
 import org.example.assetpilotbackend.enums.StatutEquipement;
+import org.example.assetpilotbackend.enums.StatutAffectation;
 import org.example.assetpilotbackend.exception.ResourceNotFoundException;
 import org.example.assetpilotbackend.mapper.CategorieMapper;
 import org.example.assetpilotbackend.mapper.EquipementMapper;
+import org.example.assetpilotbackend.model.Affectation;
 import org.example.assetpilotbackend.model.Categorie;
 import org.example.assetpilotbackend.model.Equipement;
+import org.example.assetpilotbackend.repository.AffectationRepository;
 import org.example.assetpilotbackend.repository.CategorieRepository;
 import org.example.assetpilotbackend.repository.EquipementRepository;
 import org.example.assetpilotbackend.service.EquipementService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,8 +27,22 @@ public class EquipementServiceImpl implements EquipementService {
     private final EquipementRepository repo;
     private final EquipementMapper mapper;
     private final CategorieServiceImpl service;
+    private final AffectationRepository affectationRepository;
 
     @Override
+    public Page<EquipementResponse> equipementsActifsEmploye(long employeId, Pageable pageable) {
+        Page<Affectation> affectations = affectationRepository
+                .findByEmploye_IdAndStatut(employeId, StatutAffectation.ACTIF, pageable);
+
+        return affectations.map(affectation -> {
+            EquipementResponse response = mapper.toDto(affectation.getEquipement());
+            response.setDateAffectation(affectation.getDateDebut());
+            return response;
+        });
+    }
+
+    @Override
+    @Transactional
     public EquipementResponse ajouterEquipement(EquipementRequest request) {
        Equipement equipement = mapper.toEntity(request);
        Categorie categorie = service.getCategorieEntity(request.getCategorieId());
@@ -48,6 +66,7 @@ public class EquipementServiceImpl implements EquipementService {
     }
 
     @Override
+    @Transactional
     public EquipementResponse modifierEquipement(long id, EquipementRequest request) {
         Equipement equipement = getEquipementEntity(id);
         Categorie categorie = service.getCategorieEntity(request.getCategorieId());
@@ -72,6 +91,7 @@ public class EquipementServiceImpl implements EquipementService {
     }
 
     @Override
+    @Transactional
     public void supprimerEquipement(long id) {
         repo.delete( getEquipementEntity(id));
     }

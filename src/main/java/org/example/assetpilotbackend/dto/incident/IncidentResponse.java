@@ -26,4 +26,5 @@ public class IncidentResponse {
     private String traiteParNom;
     private Long equipementId;
     private String equipementNumeroSerie;
+    private String equipementModele;
 }

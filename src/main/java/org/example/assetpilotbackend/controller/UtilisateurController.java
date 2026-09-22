@@ -2,6 +2,8 @@ package org.example.assetpilotbackend.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.assetpilotbackend.dto.utilisateur.ProfilResponse;
+import org.example.assetpilotbackend.dto.utilisateur.ProfilUpdateRequest;
 import org.example.assetpilotbackend.dto.utilisateur.ResetPasswordRequest;
 import org.example.assetpilotbackend.dto.utilisateur.UtilisateurRequest;
 import org.example.assetpilotbackend.dto.utilisateur.UtilisateurResponse;
@@ -53,7 +55,18 @@ public class UtilisateurController {
     @PutMapping("/changer-password")
     public void changerPassword(@AuthenticationPrincipal Utilisateur utilisateur,
                                 @Valid @RequestBody ResetPasswordRequest request) {
-        utilisateurService.changerPassword(utilisateur.getEmail(), request);
+        utilisateurService.changerPassword(utilisateur, request);
+    }
+
+    @GetMapping("/profil")
+    public ProfilResponse monProfil(@AuthenticationPrincipal Utilisateur utilisateur) {
+        return utilisateurService.getProfil(utilisateur);
+    }
+
+    @PutMapping("/profil")
+    public ProfilResponse modifierMonProfil(@AuthenticationPrincipal Utilisateur utilisateur,
+                                            @Valid @RequestBody ProfilUpdateRequest request) {
+        return utilisateurService.mettreAjourProfil(utilisateur, request);
     }
 
     @DeleteMapping("/{id}")

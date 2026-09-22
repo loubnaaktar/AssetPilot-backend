@@ -1,12 +1,16 @@
 package org.example.assetpilotbackend.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.example.assetpilotbackend.dto.utilisateur.ProfilResponse;
+import org.example.assetpilotbackend.dto.utilisateur.ProfilUpdateRequest;
 import org.example.assetpilotbackend.dto.utilisateur.ResetPasswordRequest;
 import org.example.assetpilotbackend.dto.utilisateur.UtilisateurRequest;
 import org.example.assetpilotbackend.dto.utilisateur.UtilisateurResponse;
 import org.example.assetpilotbackend.enums.Role;
 import org.example.assetpilotbackend.exception.ResourceNotFoundException;
 import org.example.assetpilotbackend.mapper.UtilisateurMapper;
+import org.example.assetpilotbackend.model.Employe;
+import org.example.assetpilotbackend.model.Technicien;
 import org.example.assetpilotbackend.model.Utilisateur;
 import org.example.assetpilotbackend.repository.UtilisateurRepository;
 import org.example.assetpilotbackend.service.AccountService;
@@ -15,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +31,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     private final AccountService accountService;
 
     @Override
+    @Transactional
     public UtilisateurResponse ajouterAdmin(UtilisateurRequest request) {
         Utilisateur utilisateur = new Utilisateur();
         utilisateur.setPrenom(request.getPrenom());
@@ -56,6 +62,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
 
     @Override
+    @Transactional
     public UtilisateurResponse modifierUtilisateur(long id, UtilisateurRequest request) {
         Utilisateur utilisateur = getUtilisateurEntity(id);
         utilisateur.setPrenom(request.getPrenom());
@@ -67,16 +74,53 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
 
     @Override
-    public void changerPassword(String email, ResetPasswordRequest request) {
-        Utilisateur utilisateur = repo.findByEmail(email);
-        if (utilisateur == null) {
-            throw new ResourceNotFoundException("Utilisateur introuvable avec email: " + email);
+    public ProfilResponse getProfil(Utilisateur utilisateur) {
+        ProfilResponse profil = new ProfilResponse();
+        profil.setId(utilisateur.getId());
+        profil.setPrenom(utilisateur.getPrenom());
+        profil.setNom(utilisateur.getNom());
+        profil.setEmail(utilisateur.getEmail());
+        profil.setRole(utilisateur.getRole());
+
+        if (utilisateur instanceof Employe) {
+            Employe employe = (Employe) utilisateur;
+            profil.setMatricule(employe.getMatricule());
+        } else if (utilisateur instanceof Technicien) {
+            Technicien technicien = (Technicien) utilisateur;
+            profil.setSpecialite(technicien.getSpecialite());
         }
-        utilisateur.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        return profil;
+    }
+
+    @Override
+    @Transactional
+    public ProfilResponse mettreAjourProfil(Utilisateur utilisateur, ProfilUpdateRequest request) {
+        Utilisateur existant = repo.findByEmail(request.getEmail());
+        if (existant != null && !existant.getId().equals(utilisateur.getId())) {
+            throw new IllegalArgumentException("Cet email est deja utilise par un autre compte");
+        }
+
+        utilisateur.setPrenom(request.getPrenom());
+        utilisateur.setNom(request.getNom());
+        utilisateur.setEmail(request.getEmail());
+
+        return getProfil(repo.save(utilisateur));
+    }
+
+    @Override
+    @Transactional
+    public void changerPassword(Utilisateur utilisateur, ResetPasswordRequest request) {
+        if (!passwordEncoder.matches(request.getAncienMotDePasse(), utilisateur.getPassword())) {
+            throw new IllegalArgumentException("L'ancien mot de passe est incorrect");
+        }
+
+        utilisateur.setPassword(passwordEncoder.encode(request.getNouveauMotDePasse()));
         repo.save(utilisateur);
     }
 
     @Override
+    @Transactional
     public void supprimerUtilisateur(Long id) {
         repo.delete(getUtilisateurEntity(id));
     }

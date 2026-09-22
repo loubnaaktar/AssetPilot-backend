@@ -5,6 +5,7 @@ import org.example.assetpilotbackend.dto.incident.IncidentRequest;
 import org.example.assetpilotbackend.dto.incident.IncidentResponse;
 import org.example.assetpilotbackend.dto.incident.IncidentUpdateRequest;
 import org.example.assetpilotbackend.enums.NiveauUrgence;
+import org.example.assetpilotbackend.enums.StatutAffectation;
 import org.example.assetpilotbackend.enums.StatutEquipement;
 import org.example.assetpilotbackend.enums.StatutIncident;
 import org.example.assetpilotbackend.exception.ResourceNotFoundException;
@@ -13,6 +14,7 @@ import org.example.assetpilotbackend.model.Employe;
 import org.example.assetpilotbackend.model.Equipement;
 import org.example.assetpilotbackend.model.Incident;
 import org.example.assetpilotbackend.model.Technicien;
+import org.example.assetpilotbackend.repository.AffectationRepository;
 import org.example.assetpilotbackend.repository.EmployeRepository;
 import org.example.assetpilotbackend.repository.EquipementRepository;
 import org.example.assetpilotbackend.repository.IncidentRepository;
@@ -37,6 +39,7 @@ public class IncidentServiceImpl implements IncidentService {
     private final EmployeRepository employeRepository;
     private final EquipementRepository equipementRepository;
     private final TechnicienRepository technicienRepository;
+    private final AffectationRepository affectationRepository;
     private final IncidentMapper incidentMapper;
 
     @Override
@@ -47,6 +50,12 @@ public class IncidentServiceImpl implements IncidentService {
 
         Equipement equipement = equipementRepository.findById(request.getEquipementId())
                 .orElseThrow(() -> new ResourceNotFoundException("Équipement introuvable avec id: " + request.getEquipementId()));
+
+        if (equipement.getStatut() == StatutEquipement.EN_PANNE
+                || equipement.getStatut() == StatutEquipement.EN_REPARATION
+                || equipement.getStatut() == StatutEquipement.HORS_SERVICE) {
+            throw new IllegalArgumentException("Cet équipement est déjà en cours de traitement.");
+        }
 
         equipement.setStatut(StatutEquipement.EN_PANNE);
         equipementRepository.save(equipement);
@@ -71,7 +80,7 @@ public class IncidentServiceImpl implements IncidentService {
         incident.setStatut(StatutIncident.EN_COURS);
 
         Equipement equipement = incident.getEquipement();
-        equipement.setStatut(StatutEquipement.EN_REPARATION);
+        passerEnReparation(equipement);
         equipementRepository.save(equipement);
 
         return incidentMapper.toDTO(incidentRepository.save(incident));
@@ -82,6 +91,10 @@ public class IncidentServiceImpl implements IncidentService {
     public IncidentResponse mettreAJourIncident(long incidentId, IncidentUpdateRequest request) {
         Incident incident = getIncidentEntity(incidentId);
 
+        if (incident.getStatut() == StatutIncident.RESOLU) {
+            throw new IllegalArgumentException("Cet incident est déjà résolu et ne peut plus être modifié.");
+        }
+
         if (request.getStatut() != null) {
             incident.setStatut(request.getStatut());
         }
@@ -91,16 +104,39 @@ public class IncidentServiceImpl implements IncidentService {
 
         Equipement equipement = incident.getEquipement();
 
+        boolean horsService = Boolean.TRUE.equals(request.getEquipementHorsService());
+
         if (incident.getStatut() == StatutIncident.EN_COURS) {
-            equipement.setStatut(StatutEquipement.EN_REPARATION);
+            if (horsService) {
+                equipement.setStatut(StatutEquipement.HORS_SERVICE);
+            } else {
+                passerEnReparation(equipement);
+            }
         } else if (incident.getStatut() == StatutIncident.RESOLU) {
             incident.setDateResolution(LocalDateTime.now());
-            equipement.setStatut(StatutEquipement.EN_STOCK);
+            if (horsService) {
+                equipement.setStatut(StatutEquipement.HORS_SERVICE);
+            } else {
+                mettreAJourStatutApresResolution(equipement);
+            }
         }
 
         equipementRepository.save(equipement);
 
         return incidentMapper.toDTO(incidentRepository.save(incident));
+    }
+
+    private void passerEnReparation(Equipement equipement) {
+        if (equipement.getStatut() != StatutEquipement.EN_PANNE) {
+            throw new IllegalArgumentException("L'équipement doit être en panne avant de passer en réparation.");
+        }
+        equipement.setStatut(StatutEquipement.EN_REPARATION);
+    }
+
+    private void mettreAJourStatutApresResolution(Equipement equipement) {
+        boolean encoreAffecte = affectationRepository
+                .existsByEquipement_IdAndStatut(equipement.getId(), StatutAffectation.ACTIF);
+        equipement.setStatut(encoreAffecte ? StatutEquipement.AFFECTE : StatutEquipement.EN_STOCK);
     }
 
     @Override

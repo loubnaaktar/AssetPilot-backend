@@ -11,6 +11,7 @@ import org.example.assetpilotbackend.service.CategoryService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +20,7 @@ public class CategorieServiceImpl implements CategoryService {
     private final CategorieRepository repo;
     private final CategorieMapper mapper;
     @Override
+    @Transactional
     public CategorieResponse ajouterCategorie(CategorieRequest request) {
         Categorie categorie = repo.save(mapper.toEntity(request));
         return mapper.toDto(categorie);
@@ -35,6 +37,7 @@ public class CategorieServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public CategorieResponse modifierCategorie(Long id, CategorieRequest request) {
         Categorie categorie = getCategorieEntity(id);
         categorie.setNom(request.getNom());
@@ -43,6 +46,7 @@ public class CategorieServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public void supprimerCategorie(Long id) {
         repo.delete(getCategorieEntity(id));
     }

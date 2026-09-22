@@ -15,5 +15,6 @@ public interface EquipementService {
     EquipementResponse modifierEquipement(long id, EquipementRequest request);
     Page<EquipementResponse> equipementsParStatut(StatutEquipement statut, Pageable pageable);
     Page<EquipementResponse> equipementsParCategorie(long categorieId, Pageable pageable);
+    Page<EquipementResponse> equipementsActifsEmploye(long employeId, Pageable pageable);
     void supprimerEquipement(long id);
 }

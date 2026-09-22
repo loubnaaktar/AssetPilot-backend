@@ -16,6 +16,7 @@ import org.example.assetpilotbackend.service.TechnicienService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,7 @@ public class TechnicienServiceImpl implements TechnicienService {
     private final AccountService accountService;
 
     @Override
+    @Transactional
     public TechnicienResponse ajouterTechnicien(TechnicienRequest request) {
         Technicien technicien = mapper.toEntity(request);
         technicien.setRole(Role.TECHNICIEN);
@@ -47,6 +49,7 @@ public class TechnicienServiceImpl implements TechnicienService {
     }
 
     @Override
+    @Transactional
     public TechnicienResponse modifierTechnicien(long id, TechnicienRequest request) {
         Technicien technicien = getTechnicienEntity(id);
         technicien.setNom(request.getNom());
@@ -57,6 +60,7 @@ public class TechnicienServiceImpl implements TechnicienService {
     }
 
     @Override
+    @Transactional
     public void supprimerTechnicien(long id) {
         repo.delete(getTechnicienEntity(id));
     }

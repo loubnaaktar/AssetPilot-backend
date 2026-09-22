@@ -11,7 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ResetPasswordRequest {
 
-    @NotBlank(message = "Le mot de passe est obligatoire")
+    @NotBlank(message = "L'ancien mot de passe est obligatoire")
+    private String ancienMotDePasse;
+
+    @NotBlank(message = "Le nouveau mot de passe est obligatoire")
     @Size(min = 6, message = "Le mot de passe doit contenir au moins 6 caracteres")
-    private String password;
+    private String nouveauMotDePasse;
 }

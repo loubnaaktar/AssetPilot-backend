@@ -13,6 +13,7 @@ import org.example.assetpilotbackend.service.EmployeService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +24,7 @@ public class EmployeServiceImpl implements EmployeService {
     private final AccountService accountService;
 
     @Override
+    @Transactional
     public EmployeResponse ajouterEmploye(EmployeRequest request) {
         Employe employe = mapper.toEntity(request);
         employe.setRole(Role.EMPLOYE);
@@ -42,16 +44,21 @@ public class EmployeServiceImpl implements EmployeService {
     }
 
     @Override
+    @Transactional
     public EmployeResponse modifierEmploye(long id, EmployeRequest request) {
         Employe employe = getEmployeEntity(id);
         employe.setNom(request.getNom());
         employe.setPrenom(request.getPrenom());
         employe.setEmail(request.getEmail());
+        if (request.getMatricule() != null) {
+            employe.setMatricule(request.getMatricule());
+        }
 
         return mapper.toDTO(repo.save(employe));
     }
 
     @Override
+    @Transactional
     public void supprimerEmploye(long id) {
         repo.delete(getEmployeEntity(id));
     }

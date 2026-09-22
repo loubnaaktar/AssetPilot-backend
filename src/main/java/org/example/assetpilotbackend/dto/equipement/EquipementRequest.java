@@ -28,6 +28,6 @@ public class EquipementRequest {
     @NotNull(message = "La categorie est obligatoire")
     private Long categorieId;
 
-    @NotNull(message = "le statut est bligatoire")
+    @NotNull(message = "Le statut est obligatoire")
     private StatutEquipement statut;
 }

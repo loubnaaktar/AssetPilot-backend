@@ -1,4 +1,4 @@
-package org.example.assetpilotbackend.dto.employe;
+package org.example.assetpilotbackend.dto.utilisateur;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmployeRequest {
+public class ProfilUpdateRequest {
 
     @NotBlank(message = "Le prenom est obligatoire")
     private String prenom;
@@ -20,6 +20,4 @@ public class EmployeRequest {
     @NotBlank(message = "L'email est obligatoire")
     @Email(message = "L'email n'est pas valide")
     private String email;
-
-    private String matricule;
 }
