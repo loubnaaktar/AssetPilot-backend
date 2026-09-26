@@ -56,34 +56,56 @@ Git/GitHub                    Versionnement
 
 ------------------------------------------------------------------------
 
-# 6. Installation et lancement
+# 6. Diagrammes UML
 
-## 6.1 Prérequis
+## 6.1 Diagramme de classes
+
+![img_1.png](captures/img_1.png)
+
+## 6.2 Diagramme de cas d'utilisation
+
+![img_4.png](captures/img_4.png)
+
+## 6.3 Diagrammes de séquence
+
+![img_3.png](captures/img_3.png)
+
+![img_7.png](captures/img_7.png)
+
+![img_5.png](captures/img_5.png)
+
+![img_6.png](captures/img_6.png)
+
+-----------------------------------------------------------------------
+
+# 7. Installation et lancement
+
+## 7.1 Prérequis
 
 - Java 17
 - Maven
 - Docker Desktop
 - Git
 
-## 6.2 Cloner le dépôt
+## 7.2 Cloner le dépôt
 
 ``` bash
 git clone https://github.com/votre-compte/AssetPilot-backend.git
 ```
 
-## 6.3 Ouvrir le dossier
+## 7.3 Ouvrir le dossier
 
 ``` bash
 cd AssetPilot-backend
 ```
 
-## 6.4 Installer les dépendances
+## 7.4 Installer les dépendances
 
 ``` bash
 mvn clean install
 ```
 
-## 6.5 Variables d'environnement
+## 7.5 Variables d'environnement
 
 ``` env
 SPRING_DATASOURCE_URL=
@@ -94,7 +116,7 @@ APP_JWT_SECRET=
 APP_JWT_EXPIRATION=
 ```
 
-## 6.6 Lancer le projet (Docker)
+## 7.6 Lancer le projet (Docker)
 
 ``` bash
 docker compose up --build
@@ -102,7 +124,7 @@ docker compose up --build
 
 L'API démarre sur le port 8080, MySQL sur le port 3307 et Redis sur le port 6379.
 
-## 6.7 Ouvrir le projet
+## 7.7 Ouvrir le projet
 
 API : http://localhost:8080
 Swagger UI : http://localhost:8080/swagger-ui.html
@@ -112,17 +134,17 @@ Swagger UI : http://localhost:8080/swagger-ui.html
 
 ------------------------------------------------------------------------
 
-# 7. Captures d'écran
+# 8. Captures d'écran
 
 ## Capture 1
 
 **Titre :** Swagger UI
 
-![alt text](captures/swagger-ui.png)
+![img_9.png](captures/img_9.png)
 
 ------------------------------------------------------------------------
 
-# 8. Contribution personnelle
+# 9. Contribution personnelle
 
 Projet réalisé individuellement.
 
@@ -132,7 +154,7 @@ J'ai développé les API REST, la sécurité JWT, la gestion des rôles avec @Pr
 
 ------------------------------------------------------------------------
 
-# 9. Difficultés rencontrées
+# 10. Difficultés rencontrées
 
 ## Difficulté 1
 
@@ -156,7 +178,7 @@ L'utilisation de MapStruct et la validation du schéma via les migrations Flyway
 
 ------------------------------------------------------------------------
 
-# 10. Améliorations possibles
+# 11. Améliorations possibles
 
 - Ajouter une interface frontend (React.js) pour les trois rôles
 - Ajouter des notifications par e-mail
@@ -169,6 +191,7 @@ Ces améliorations permettraient d'améliorer l'expérience utilisateur, les per
 
 # ✅ Checklist finale
 
+-   [x] Diagrammes UML
 -   [x] Présentation du projet
 -   [x] Fonctionnalités
 -   [x] Technologies
