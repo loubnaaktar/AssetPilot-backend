@@ -127,7 +127,9 @@ public class IncidentServiceImpl implements IncidentService {
     }
 
     private void passerEnReparation(Equipement equipement) {
-        if (equipement.getStatut() != StatutEquipement.EN_PANNE) {
+        boolean dejaEnPanne = equipement.getStatut() == StatutEquipement.EN_PANNE;
+        boolean dejaEnReparation = equipement.getStatut() == StatutEquipement.EN_REPARATION;
+        if (!dejaEnPanne && !dejaEnReparation) {
             throw new IllegalArgumentException("L'équipement doit être en panne avant de passer en réparation.");
         }
         equipement.setStatut(StatutEquipement.EN_REPARATION);

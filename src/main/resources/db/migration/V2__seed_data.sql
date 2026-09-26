@@ -13,7 +13,8 @@ INSERT INTO utilisateur (id, prenom, nom, email, password, role) VALUES
 (4, 'Khadija', 'Tazi',              'khadija.tazi@assetpilot.com',      '$2a$10$5Bd9rbueDD5/gNgBVilBzufsuQRJy6adibhi/Uf7qAvtnOD7BRBYi', 'EMPLOYE'),
 (5, 'Youssef', 'El Alami',          'youssef.elalami@assetpilot.com',   '$2a$10$Pfq3tIWtX4mEccpHd8LDzuFVTaFFvu4TpPiEZ8sRUWwM17U9fh9ua', 'TECHNICIEN'),
 (6, 'Amina', 'Bouazzaoui',          'amina.bouazzaoui@assetpilot.com',  '$2a$10$hBiQT7bYayxBtA0PR2rRSObhmiTHhyMGpI/3QinKCO2LnicLdgzcq', 'TECHNICIEN'),
-(7, 'Rachid', 'Ouazzani',          'rachid.ouazzani@assetpilot.com',   '$2a$10$w8F/1NPm2ObWeM4vxgeTkOHFjAqFz0BdYzThXbfLbyiSoDoxXF2n2', 'TECHNICIEN');
+(7, 'Rachid', 'Ouazzani',          'rachid.ouazzani@assetpilot.com',   '$2a$10$w8F/1NPm2ObWeM4vxgeTkOHFjAqFz0BdYzThXbfLbyiSoDoxXF2n2', 'TECHNICIEN'),
+(8, 'Hicham', 'Bennani',            'hicham.bennani@assetpilot.com',     '$2a$10$hBiQT7bYayxBtA0PR2rRSObhmiTHhyMGpI/3QinKCO2LnicLdgzcq', 'TECHNICIEN');
 
 INSERT INTO employe (id, matricule) VALUES
 (2, 'EMP-001'),
@@ -23,26 +24,27 @@ INSERT INTO employe (id, matricule) VALUES
 INSERT INTO technicien (id, specialite) VALUES
 (5, 'RESEAU'),
 (6, 'HARDWARE'),
-(7, 'SOFTWARE');
+(7, 'SOFTWARE'),
+(8, 'HARDWARE');
 
 INSERT INTO equipement (id, numero_serie, modele, marque, date_achat, statut, categorie_id) VALUES
 (1, 'SN-DELL-7420-01',   'Latitude 7420',        'Dell',    '2023-02-10', 'AFFECTE',       1),
 (2, 'SN-HP-PRO-01',      'ProBook 450 G8',       'HP',      '2023-04-15', 'AFFECTE',       1),
-(3, 'SN-LNV-X1C-01',     'ThinkPad X1 Carbon',   'Lenovo',  '2023-06-20', 'AFFECTE',       1),
+(3, 'SN-LNV-X1C-01',     'ThinkPad X1 Carbon',   'Lenovo',  '2023-06-20', 'EN_PANNE',      1),
 (4, 'SN-DELL-5420-02',   'Latitude 5420',        'Dell',    '2022-11-05', 'EN_STOCK',      1),
 (5, 'SN-HP-ELITE-01',    'EliteBook 850 G9',     'HP',      '2024-01-12', 'EN_STOCK',      1),
 (6, 'SN-APL-MBP16-01',   'MacBook Pro 16',       'Apple',   '2024-03-08', 'EN_PANNE',      1),
-(7, 'SN-DELL-U2722-01',  'UltraSharp U2722DE',   'Dell',    '2023-07-22', 'AFFECTE',       2),
+(7, 'SN-DELL-U2722-01',  'UltraSharp U2722DE',   'Dell',    '2023-07-22', 'EN_REPARATION', 2),
 (8, 'SN-SAM-S32-01',     'S32A600',              'Samsung', '2024-02-18', 'EN_STOCK',      2),
 (9, 'SN-LG-27-01',       '27GP850',              'LG',      '2024-05-30', 'EN_STOCK',      2),
-(10, 'SN-LOG-MX-01',     'MX Master 3S',         'Logitech','2024-08-14', 'AFFECTE',       3),
+(10, 'SN-LOG-MX-01',     'MX Master 3S',         'Logitech','2024-08-14', 'EN_PANNE',      3),
 (11, 'SN-LOG-K860-01',   'Ergo K860',            'Logitech','2024-09-05', 'EN_STOCK',      3),
-(12, 'SN-HP-M404-02',    'LaserJet Pro M404dn',  'HP',      '2022-08-25', 'EN_STOCK',      4),
+(12, 'SN-HP-M404-02',    'LaserJet Pro M404dn',  'HP',      '2022-08-25', 'EN_REPARATION', 4),
 (13, 'SN-CAN-MF445-01',  'imageRUNNER MF445',    'Canon',   '2023-11-10', 'AFFECTE',       4),
 (14, 'SN-DELL-R750-01',  'PowerEdge R750',       'Dell',    '2024-04-20', 'AFFECTE',       5),
 (15, 'SN-CISCO-9200-01',  'Catalyst 9200',        'Cisco',   '2023-12-03', 'EN_REPARATION', 6),
 (16, 'SN-CISCO-4431-01',  'ISR 4431',             'Cisco',   '2024-06-15', 'EN_STOCK',      6),
-(17, 'SN-YEO-T48-01',     'T48G',                 'Yealink', '2023-09-12', 'AFFECTE',       7),
+(17, 'SN-YEO-T48-01',     'T48G',                 'Yealink', '2023-09-12', 'EN_PANNE',      7),
 (18, 'SN-YEO-W60-01',     'W60P DECT',            'Yealink', '2024-07-28', 'EN_STOCK',      7);
 
 INSERT INTO affectation (id, date_debut, date_fin, statut, employe_id, equipement_id) VALUES
