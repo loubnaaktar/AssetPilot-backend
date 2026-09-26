@@ -1,6 +1,5 @@
 package org.example.assetpilotbackend.mapper;
 
-import org.example.assetpilotbackend.dto.auth.RegisterRequest;
 import org.example.assetpilotbackend.dto.utilisateur.UtilisateurRequest;
 import org.example.assetpilotbackend.dto.utilisateur.UtilisateurResponse;
 import org.example.assetpilotbackend.model.Utilisateur;

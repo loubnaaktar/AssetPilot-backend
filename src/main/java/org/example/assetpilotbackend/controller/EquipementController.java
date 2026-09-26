@@ -8,11 +8,9 @@ import org.example.assetpilotbackend.enums.Role;
 import org.example.assetpilotbackend.enums.StatutEquipement;
 import org.example.assetpilotbackend.model.Utilisateur;
 import org.example.assetpilotbackend.service.EquipementService;
-import org.example.assetpilotbackend.service.QrCodeService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,15 +23,6 @@ import org.springframework.web.server.ResponseStatusException;
 public class EquipementController {
 
     private final EquipementService equipementService;
-
-    private final QrCodeService qrCodeService;
-
-    @GetMapping("/{id}/qr-code")
-    public ResponseEntity<byte[]> getQrCode(@PathVariable Long id) {
-        return ResponseEntity.ok()
-                .contentType(MediaType.IMAGE_PNG)
-                .body(qrCodeService.genererQrCode(id));
-    }
 
     @GetMapping("/employe/{employeId}")
     @PreAuthorize("hasAnyRole('EMPLOYE', 'ADMIN')")

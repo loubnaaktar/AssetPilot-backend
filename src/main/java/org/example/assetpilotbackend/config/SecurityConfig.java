@@ -6,7 +6,6 @@ import org.example.assetpilotbackend.auth.CustomUserDetailsService;
 import org.example.assetpilotbackend.auth.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -41,7 +40,6 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/equipements/*/qr-code").permitAll()
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
                         .anyRequest().authenticated()

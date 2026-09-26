@@ -77,6 +77,12 @@ public class IncidentController {
         return incidentService.incidentsParTechnicien(technicienId, pageable);
     }
 
+    @GetMapping("/equipement/{equipementId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TECHNICIEN')")
+    public Page<IncidentResponse> incidentsParEquipement(@PathVariable long equipementId, Pageable pageable) {
+        return incidentService.incidentsParEquipement(equipementId, pageable);
+    }
+
     @GetMapping("/mes-incidents")
     @PreAuthorize("hasRole('TECHNICIEN')")
     public Page<IncidentResponse> mesIncidents(@AuthenticationPrincipal Utilisateur utilisateur, Pageable pageable) {

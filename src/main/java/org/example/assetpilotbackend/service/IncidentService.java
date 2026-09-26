@@ -15,6 +15,7 @@ public interface IncidentService {
     Page<IncidentResponse> allIncidents(String mot, StatutIncident statut, NiveauUrgence niveauUrgence, Boolean nonAssigne, Pageable pageable);
     Page<IncidentResponse> incidentsParEmploye(long employeId, Pageable pageable);
     Page<IncidentResponse> incidentsParTechnicien(long technicienId, Pageable pageable);
+    Page<IncidentResponse> incidentsParEquipement(long equipementId, Pageable pageable);
     IncidentResponse chercherById(long id);
 
     byte[] exporterExcel();

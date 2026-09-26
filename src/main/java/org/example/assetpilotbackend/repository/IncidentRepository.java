@@ -18,6 +18,8 @@ public interface IncidentRepository extends JpaRepository<Incident, Long> {
 
     Page<Incident> findByStatut(StatutIncident statut, Pageable pageable);
 
+    Page<Incident> findByEquipement_Id(Long equipementId, Pageable pageable);
+
     long countByStatut(StatutIncident statut);
 
     long countByTraitePar_IdAndStatutNot(Long technicienId, StatutIncident statut);
@@ -25,7 +27,7 @@ public interface IncidentRepository extends JpaRepository<Incident, Long> {
     @Query("SELECT i FROM Incident i WHERE " +
             "(:mot IS NULL OR :mot = '' " +
             "   OR i.description LIKE CONCAT('%', :mot, '%') " +
-            "   OR i.equipement.NumeroSerie LIKE CONCAT('%', :mot, '%')) " +
+            "   OR i.equipement.numeroSerie LIKE CONCAT('%', :mot, '%')) " +
             "AND (:statut IS NULL OR i.statut = :statut) " +
             "AND (:niveauUrgence IS NULL OR i.niveauUrgence = :niveauUrgence) " +
             "AND (:nonAssigne IS NULL OR :nonAssigne = FALSE OR i.traitePar IS NULL)")

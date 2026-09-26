@@ -20,9 +20,9 @@ public class Equipement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String NumeroSerie;
+    private String numeroSerie;
     private String modele;
-    private String Marque;
+    private String marque;
     private LocalDate dateAchat;
 
     @Enumerated(EnumType.STRING)
