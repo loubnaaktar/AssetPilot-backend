@@ -3,6 +3,7 @@ package org.example.assetpilotbackend.service.impl;
 import org.example.assetpilotbackend.mapper.EquipementMapper;
 import org.example.assetpilotbackend.model.Equipement;
 import org.example.assetpilotbackend.repository.AffectationRepository;
+import org.example.assetpilotbackend.repository.CategorieRepository;
 import org.example.assetpilotbackend.repository.EquipementRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,7 +24,7 @@ class EquipementServiceImplTest {
     @Mock
     private EquipementMapper mapper;
     @Mock
-    private CategorieServiceImpl service;
+    private CategorieRepository categorieRepo;
     @Mock
     private AffectationRepository affectationRepository;
     @InjectMocks

@@ -26,7 +26,7 @@ public class EquipementServiceImpl implements EquipementService {
 
     private final EquipementRepository repo;
     private final EquipementMapper mapper;
-    private final CategorieServiceImpl service;
+    private final CategorieRepository categorieRepo;
     private final AffectationRepository affectationRepository;
 
     @Override
@@ -45,7 +45,7 @@ public class EquipementServiceImpl implements EquipementService {
     @Transactional
     public EquipementResponse ajouterEquipement(EquipementRequest request) {
        Equipement equipement = mapper.toEntity(request);
-       Categorie categorie = service.getCategorieEntity(request.getCategorieId());
+       Categorie categorie = getCategorieEntity(request.getCategorieId());
        equipement.setCategorie(categorie);
        return mapper.toDto(repo.save(equipement));
     }
@@ -69,7 +69,7 @@ public class EquipementServiceImpl implements EquipementService {
     @Transactional
     public EquipementResponse modifierEquipement(long id, EquipementRequest request) {
         Equipement equipement = getEquipementEntity(id);
-        Categorie categorie = service.getCategorieEntity(request.getCategorieId());
+        Categorie categorie = getCategorieEntity(request.getCategorieId());
         equipement.setNumeroSerie(request.getNumeroSerie());
         equipement.setModele(request.getModele());
         equipement.setMarque(request.getMarque());
@@ -98,5 +98,10 @@ public class EquipementServiceImpl implements EquipementService {
     public Equipement getEquipementEntity(long id) {
         return repo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Équipement introuvable avec id: " + id));
+    }
+
+    private Categorie getCategorieEntity(Long id) {
+        return categorieRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Catégorie introuvable avec id: " + id));
     }
 }

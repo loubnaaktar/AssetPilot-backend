@@ -18,14 +18,14 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class CategorieServiceImplTest {
+class CategoryServiceImplTest {
 
     @Mock
     private CategorieRepository repo;
     @Mock
     private CategorieMapper mapper;
     @InjectMocks
-    private CategorieServiceImpl categorieService;
+    private CategoryServiceImpl categorieService;
 
     @Test
     void modifierCategorie() {

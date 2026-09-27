@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class CategorieServiceImpl implements CategoryService {
+public class CategoryServiceImpl implements CategoryService {
 
     private final CategorieRepository repo;
     private final CategorieMapper mapper;
