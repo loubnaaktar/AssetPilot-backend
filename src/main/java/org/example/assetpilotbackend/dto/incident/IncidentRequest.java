@@ -20,7 +20,4 @@ public class IncidentRequest {
 
     @NotNull(message = "L'equipement est obligatoire")
     private Long equipementId;
-
-    @NotNull(message = "L'employe declarant est obligatoire")
-    private Long declareParId;
 }
