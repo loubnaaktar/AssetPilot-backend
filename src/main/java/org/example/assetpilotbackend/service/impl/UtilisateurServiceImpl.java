@@ -51,7 +51,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     public UtilisateurResponse getUtilisateurByEmail(String email) {
         Utilisateur utilisateur = repo.findByEmail(email);
         if (utilisateur == null) {
-            throw new ResourceNotFoundException("Utilisateur introuvable avec email: " + email);
+            throw new ResourceNotFoundException("Utilisateur introuvable");
         }
         return mapper.toDTO(utilisateur);
     }

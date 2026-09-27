@@ -6,6 +6,7 @@ import org.example.assetpilotbackend.dto.auth.LoginRequest;
 import org.example.assetpilotbackend.model.Utilisateur;
 import org.example.assetpilotbackend.repository.UtilisateurRepository;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ public class AuthServiceImpl implements AuthService {
 
         Utilisateur utilisateur = utilisateurRepository.findByEmail(request.getEmail());
         if (utilisateur == null) {
-            throw new IllegalArgumentException("Utilisateur introuvable avec email: " + request.getEmail());
+            throw new BadCredentialsException("Identifiants invalides");
         }
 
         String token = jwtService.generateToken(utilisateur);
