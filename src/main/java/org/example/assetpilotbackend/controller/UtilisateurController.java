@@ -71,7 +71,8 @@ public class UtilisateurController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public void supprimerUtilisateur(@PathVariable Long id) {
-        utilisateurService.supprimerUtilisateur(id);
+    public void supprimerUtilisateur(@PathVariable Long id,
+                                     @AuthenticationPrincipal Utilisateur utilisateur) {
+        utilisateurService.supprimerUtilisateur(id, utilisateur);
     }
 }

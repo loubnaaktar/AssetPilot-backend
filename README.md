@@ -60,7 +60,7 @@ Git/GitHub                    Versionnement
 
 ## 6.1 Diagramme de classes
 
-![img_1.png](captures/img_1.png)
+![img.png](img.png)
 
 ## 6.2 Diagramme de cas d'utilisation
 

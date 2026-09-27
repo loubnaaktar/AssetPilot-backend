@@ -6,14 +6,20 @@ import org.example.assetpilotbackend.dto.employe.EmployeResponse;
 import org.example.assetpilotbackend.enums.Role;
 import org.example.assetpilotbackend.exception.ResourceNotFoundException;
 import org.example.assetpilotbackend.mapper.EmployeMapper;
+import org.example.assetpilotbackend.model.Affectation;
 import org.example.assetpilotbackend.model.Employe;
+import org.example.assetpilotbackend.model.Incident;
+import org.example.assetpilotbackend.repository.AffectationRepository;
 import org.example.assetpilotbackend.repository.EmployeRepository;
+import org.example.assetpilotbackend.repository.IncidentRepository;
 import org.example.assetpilotbackend.service.AccountService;
 import org.example.assetpilotbackend.service.EmployeService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +28,8 @@ public class EmployeServiceImpl implements EmployeService {
     private final EmployeRepository repo;
     private final EmployeMapper mapper;
     private final AccountService accountService;
+    private final IncidentRepository incidentRepository;
+    private final AffectationRepository affectationRepository;
 
     @Override
     @Transactional
@@ -60,7 +68,25 @@ public class EmployeServiceImpl implements EmployeService {
     @Override
     @Transactional
     public void supprimerEmploye(long id) {
-        repo.delete(getEmployeEntity(id));
+        Employe employe = getEmployeEntity(id);
+
+        String nomEmploye = employe.getNom();
+
+        List<Incident> incidents = incidentRepository.findByDeclarePar_Id(id);
+        for (Incident incident : incidents) {
+            incident.setDeclareParNom(nomEmploye);
+            incident.setDeclarePar(null);
+            incidentRepository.save(incident);
+        }
+
+        List<Affectation> affectations = affectationRepository.findByEmploye_Id(id);
+        for (Affectation affectation : affectations) {
+            affectation.setEmployeNom(nomEmploye);
+            affectation.setEmploye(null);
+            affectationRepository.save(affectation);
+        }
+
+        repo.delete(employe);
     }
 
     private Employe getEmployeEntity(Long id){

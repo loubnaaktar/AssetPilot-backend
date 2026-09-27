@@ -23,7 +23,7 @@ public interface UtilisateurService {
 
     void changerPassword(Utilisateur utilisateur, ResetPasswordRequest request);
 
-    void supprimerUtilisateur(Long id);
+    void supprimerUtilisateur(Long id, Utilisateur utilisateurConnecte);
 
     ProfilResponse getProfil(Utilisateur utilisateur);
 

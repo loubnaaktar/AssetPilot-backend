@@ -9,10 +9,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface AffectationRepository extends JpaRepository<Affectation, Long> {
 
     Page<Affectation> findByEmploye_IdAndStatut(Long employeId, StatutAffectation statut, Pageable pageable);
+
+    List<Affectation> findByEmploye_Id(Long employeId);
 
     Page<Affectation> findByEquipement_IdAndStatut(Long equipementId, StatutAffectation statut, Pageable pageable);
 

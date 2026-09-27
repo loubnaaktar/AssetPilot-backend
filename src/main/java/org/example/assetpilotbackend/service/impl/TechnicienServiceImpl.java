@@ -8,6 +8,7 @@ import org.example.assetpilotbackend.enums.Role;
 import org.example.assetpilotbackend.enums.StatutIncident;
 import org.example.assetpilotbackend.exception.ResourceNotFoundException;
 import org.example.assetpilotbackend.mapper.TechnicienMapper;
+import org.example.assetpilotbackend.model.Incident;
 import org.example.assetpilotbackend.model.Technicien;
 import org.example.assetpilotbackend.repository.IncidentRepository;
 import org.example.assetpilotbackend.repository.TechnicienRepository;
@@ -62,7 +63,18 @@ public class TechnicienServiceImpl implements TechnicienService {
     @Override
     @Transactional
     public void supprimerTechnicien(long id) {
-        repo.delete(getTechnicienEntity(id));
+        Technicien technicien = getTechnicienEntity(id);
+
+        String nomTechnicien = technicien.getNom();
+
+        List<Incident> incidents = incidentRepository.findByTraitePar_Id(id);
+        for (Incident incident : incidents) {
+            incident.setTraiteParNom(nomTechnicien);
+            incident.setTraitePar(null);
+            incidentRepository.save(incident);
+        }
+
+        repo.delete(technicien);
     }
 
     @Override

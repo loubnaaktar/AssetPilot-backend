@@ -82,11 +82,9 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         profil.setEmail(utilisateur.getEmail());
         profil.setRole(utilisateur.getRole());
 
-        if (utilisateur instanceof Employe) {
-            Employe employe = (Employe) utilisateur;
+        if (utilisateur instanceof Employe employe) {
             profil.setMatricule(employe.getMatricule());
-        } else if (utilisateur instanceof Technicien) {
-            Technicien technicien = (Technicien) utilisateur;
+        } else if (utilisateur instanceof Technicien technicien) {
             profil.setSpecialite(technicien.getSpecialite());
         }
 
@@ -121,8 +119,14 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     @Override
     @Transactional
-    public void supprimerUtilisateur(Long id) {
-        repo.delete(getUtilisateurEntity(id));
+    public void supprimerUtilisateur(Long id, Utilisateur utilisateurConnecte) {
+        Utilisateur utilisateurASupprimer = getUtilisateurEntity(id);
+
+        if (utilisateurASupprimer.getId().equals(utilisateurConnecte.getId())) {
+            throw new IllegalArgumentException("Vous ne pouvez pas supprimer votre propre compte.");
+        }
+
+        repo.delete(utilisateurASupprimer);
     }
 
     private Utilisateur getUtilisateurEntity(Long id) {

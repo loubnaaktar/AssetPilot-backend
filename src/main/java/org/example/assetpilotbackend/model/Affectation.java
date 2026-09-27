@@ -22,9 +22,10 @@ public class Affectation {
 
     @Enumerated(EnumType.STRING)
     private StatutAffectation statut;
+    private String employeNom;
 
     @ManyToOne
-    @JoinColumn(name = "employe_id", nullable = false)
+    @JoinColumn(name = "employe_id", nullable = true)
     private Employe employe;
 
     @ManyToOne

@@ -28,9 +28,11 @@ public class Incident {
     private LocalDateTime dateDeclaration;
     private LocalDateTime dateResolution;
     private String rapportIntervention;
+    private String declareParNom;
+    private String traiteParNom;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "declare_par_id", nullable = false)
+    @JoinColumn(name = "declare_par_id", nullable = true)
     private Employe declarePar;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -14,9 +14,9 @@ import org.mapstruct.BeanMapping;
 public interface IncidentMapper {
 
     @Mapping(source = "declarePar.id", target = "declareParId")
-    @Mapping(source = "declarePar.nom", target = "declareParNom")
+    @Mapping(target = "declareParNom", expression = "java(nomDeclarePar(incident))")
     @Mapping(source = "traitePar.id", target = "traiteParId")
-    @Mapping(source = "traitePar.nom", target = "traiteParNom")
+    @Mapping(target = "traiteParNom", expression = "java(nomTraitePar(incident))")
     @Mapping(source = "equipement.id", target = "equipementId")
     @Mapping(source = "equipement.numeroSerie", target = "equipementNumeroSerie")
     @Mapping(source = "equipement.modele", target = "equipementModele")
@@ -28,8 +28,24 @@ public interface IncidentMapper {
     @Mapping(target = "dateResolution", ignore = true)
     @Mapping(target = "rapportIntervention", ignore = true)
     @Mapping(target = "declarePar", ignore = true)
+    @Mapping(target = "declareParNom", ignore = true)
     @Mapping(target = "traitePar", ignore = true)
+    @Mapping(target = "traiteParNom", ignore = true)
     @Mapping(target = "equipement", ignore = true)
     Incident toEntity(IncidentRequest request);
+
+    default String nomDeclarePar(Incident incident) {
+        if (incident.getDeclarePar() != null) {
+            return incident.getDeclarePar().getNom();
+        }
+        return incident.getDeclareParNom();
+    }
+
+    default String nomTraitePar(Incident incident) {
+        if (incident.getTraitePar() != null) {
+            return incident.getTraitePar().getNom();
+        }
+        return incident.getTraiteParNom();
+    }
 
 }

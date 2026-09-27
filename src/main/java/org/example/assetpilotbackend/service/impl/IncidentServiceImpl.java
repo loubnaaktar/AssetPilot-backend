@@ -96,6 +96,10 @@ public class IncidentServiceImpl implements IncidentService {
         }
 
         if (request.getStatut() != null) {
+            if (request.getStatut() == StatutIncident.OUVERT) {
+                throw new IllegalArgumentException(
+                        "Un technicien ne peut pas remettre un incident en ouvert.");
+            }
             incident.setStatut(request.getStatut());
         }
         if (request.getRapportIntervention() != null) {
@@ -176,6 +180,26 @@ public class IncidentServiceImpl implements IncidentService {
                 .orElseThrow(() -> new ResourceNotFoundException("Incident introuvable avec id: " + id));
     }
 
+    private String nomDeclarePar(Incident incident) {
+        if (incident.getDeclarePar() != null) {
+            return incident.getDeclarePar().getPrenom() + " " + incident.getDeclarePar().getNom();
+        }
+        if (incident.getDeclareParNom() != null) {
+            return incident.getDeclareParNom() + " (utilisateur supprime)";
+        }
+        return "";
+    }
+
+    private String nomTraitePar(Incident incident) {
+        if (incident.getTraitePar() != null) {
+            return incident.getTraitePar().getPrenom() + " " + incident.getTraitePar().getNom();
+        }
+        if (incident.getTraiteParNom() != null) {
+            return incident.getTraiteParNom() + " (utilisateur supprime)";
+        }
+        return "";
+    }
+
     @Override
     @Transactional(readOnly = true)
     public byte[] exporterExcel() {
@@ -200,8 +224,8 @@ public class IncidentServiceImpl implements IncidentService {
                 row.createCell(4).setCellValue(i.getDateDeclaration() != null ? i.getDateDeclaration().toString() : "");
                 row.createCell(5).setCellValue(i.getDateResolution() != null ? i.getDateResolution().toString() : "");
                 row.createCell(6).setCellValue(i.getRapportIntervention() != null ? i.getRapportIntervention() : "");
-                row.createCell(7).setCellValue(i.getDeclarePar() != null ? i.getDeclarePar().getPrenom() + " " + i.getDeclarePar().getNom() : "");
-                row.createCell(8).setCellValue(i.getTraitePar() != null ? i.getTraitePar().getPrenom() + " " + i.getTraitePar().getNom() : "");
+                row.createCell(7).setCellValue(nomDeclarePar(i));
+                row.createCell(8).setCellValue(nomTraitePar(i));
                 row.createCell(9).setCellValue(i.getEquipement() != null ? i.getEquipement().getNumeroSerie() : "");
             }
 

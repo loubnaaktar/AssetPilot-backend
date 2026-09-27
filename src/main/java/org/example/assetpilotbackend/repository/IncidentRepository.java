@@ -10,11 +10,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface IncidentRepository extends JpaRepository<Incident, Long> {
     Page<Incident> findByDeclarePar_Id(Long employeId, Pageable pageable);
 
     Page<Incident> findByTraitePar_Id(Long technicienId, Pageable pageable);
+
+    List<Incident> findByDeclarePar_Id(Long employeId);
+
+    List<Incident> findByTraitePar_Id(Long technicienId);
 
     Page<Incident> findByStatut(StatutIncident statut, Pageable pageable);
 
