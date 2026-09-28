@@ -4,10 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
@@ -41,6 +44,22 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleAuthentication(AuthenticationException ex) {
         log.warn("Echec d'authentification : {}", ex.getMessage());
         return buildResponse(HttpStatus.UNAUTHORIZED, "Email ou mot de passe incorrect");
+    }
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<Map<String, Object>> handleAuthorizationDenied(AuthorizationDeniedException ex) {
+        return buildResponse(HttpStatus.FORBIDDEN, "Acces refuse : permissions insuffisantes");
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Map<String, Object>> handleAccessDenied(AccessDeniedException ex) {
+        return buildResponse(HttpStatus.FORBIDDEN, "Acces refuse : permissions insuffisantes");
+    }
+
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<Map<String, Object>> handleResponseStatus(ResponseStatusException ex) {
+        HttpStatus status = HttpStatus.resolve(ex.getStatusCode().value());
+        return buildResponse(status != null ? status : HttpStatus.INTERNAL_SERVER_ERROR, ex.getReason());
     }
 
     @ExceptionHandler(Exception.class)

@@ -75,4 +75,4 @@ CREATE TABLE incident
 
 INSERT INTO utilisateur (prenom, nom, email, password, role)
 VALUES ('Admin', 'IT', 'admin@assetpilot.com',
-        '$2a$10$5K3ueoifpzTP2WRCL0DHyOONIdmQEud3OOxPeg7PO6aqLHogOfCES', 'ADMIN');
+        '${seedPasswordHash}', 'ADMIN');

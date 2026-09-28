@@ -8,13 +8,13 @@ INSERT INTO categorie (id, nom, description) VALUES
 (7, 'Telephonique',    'Telephones et postes fixes');
 
 INSERT INTO utilisateur (id, prenom, nom, email, password, role) VALUES
-(2, 'Fatima Zahra', 'Alami',         'fatima.alami@assetpilot.com',     '$2a$10$ygfDtKNLKFlYQ0pjB.xa7ud5j6Le55BXJg6Jez.7TNL1KEDfIT9tO', 'EMPLOYE'),
-(3, 'Mohamed Amine', 'Benjelloun',    'mohamed.benjelloun@assetpilot.com', '$2a$10$5SpFZS9O2vpHWU5u9KR0Z.yekf5xF2jFkQedbY9kptOYjNSYJRqWW', 'EMPLOYE'),
-(4, 'Khadija', 'Tazi',              'khadija.tazi@assetpilot.com',      '$2a$10$5Bd9rbueDD5/gNgBVilBzufsuQRJy6adibhi/Uf7qAvtnOD7BRBYi', 'EMPLOYE'),
-(5, 'Youssef', 'El Alami',          'youssef.elalami@assetpilot.com',   '$2a$10$Pfq3tIWtX4mEccpHd8LDzuFVTaFFvu4TpPiEZ8sRUWwM17U9fh9ua', 'TECHNICIEN'),
-(6, 'Amina', 'Bouazzaoui',          'amina.bouazzaoui@assetpilot.com',  '$2a$10$hBiQT7bYayxBtA0PR2rRSObhmiTHhyMGpI/3QinKCO2LnicLdgzcq', 'TECHNICIEN'),
-(7, 'Rachid', 'Ouazzani',          'rachid.ouazzani@assetpilot.com',   '$2a$10$w8F/1NPm2ObWeM4vxgeTkOHFjAqFz0BdYzThXbfLbyiSoDoxXF2n2', 'TECHNICIEN'),
-(8, 'Hicham', 'Bennani',            'hicham.bennani@assetpilot.com',     '$2a$10$hBiQT7bYayxBtA0PR2rRSObhmiTHhyMGpI/3QinKCO2LnicLdgzcq', 'TECHNICIEN');
+(2, 'Fatima Zahra', 'Alami',         'fatima.alami@assetpilot.com',     '${seedPasswordHash}', 'EMPLOYE'),
+(3, 'Mohamed Amine', 'Benjelloun',    'mohamed.benjelloun@assetpilot.com', '${seedPasswordHash}', 'EMPLOYE'),
+(4, 'Khadija', 'Tazi',              'khadija.tazi@assetpilot.com',      '${seedPasswordHash}', 'EMPLOYE'),
+(5, 'Youssef', 'El Alami',          'youssef.elalami@assetpilot.com',   '${seedPasswordHash}', 'TECHNICIEN'),
+(6, 'Amina', 'Bouazzaoui',          'amina.bouazzaoui@assetpilot.com',  '${seedPasswordHash}', 'TECHNICIEN'),
+(7, 'Rachid', 'Ouazzani',          'rachid.ouazzani@assetpilot.com',   '${seedPasswordHash}', 'TECHNICIEN'),
+(8, 'Hicham', 'Bennani',            'hicham.bennani@assetpilot.com',     '${seedPasswordHash}', 'TECHNICIEN');
 
 INSERT INTO employe (id, matricule) VALUES
 (2, 'EMP-001'),
